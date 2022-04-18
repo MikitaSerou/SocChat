@@ -16,18 +16,20 @@ import java.util.Map;
 public class HttpHandshakeInterceptor implements HandshakeInterceptor {
 
     @Override
-    public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
+    public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
+                                   Map<String, Object> attributes) {
         log.info("Call Before Handshake");
-        if(request instanceof ServletServerHttpRequest){
-            ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) request; //TODO
+        if(request instanceof ServletServerHttpRequest servletRequest){
             HttpSession session = servletRequest.getServletRequest().getSession();
+            log.info("Session ID in interceptor: {}", session.getId());
             attributes.put("sessionId", session.getId());
         }
         return true;
     }
 
     @Override
-    public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Exception exception) {
+    public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
+                               Exception exception) {
         log.info("Call After Handshake");
     }
 }
